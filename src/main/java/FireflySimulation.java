@@ -5,10 +5,10 @@ public class FireflySimulation extends JFrame {
     private World world;
     private int rows, cols;
 
-    public FireflySimulation(int rows, int cols, double frequency, double couplingConstant) {
+    public FireflySimulation(int rows, int cols, double frequency, double couplingConstant, double adjustmentFrequency) {
         this.rows = rows;
         this.cols = cols;
-        world = new World(rows, cols, frequency, couplingConstant);
+        world = new World(rows, cols, frequency, couplingConstant, adjustmentFrequency);
         setTitle("Firefly Synchronization Simulation");
         setSize(800, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,6 +40,6 @@ public class FireflySimulation extends JFrame {
     }
 
     public static void main(String[] args) {
-        new FireflySimulation(10, 10, 0.5, 0.1);
+        new FireflySimulation(100, 100, 0.5, 0.1, 1);
     }
 }

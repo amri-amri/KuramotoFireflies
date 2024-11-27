@@ -2,15 +2,15 @@ import java.util.Random;
 
 public class Firefly extends Thread {
 
-    final static int CONTROL_RATE = 200;
 
-    Firefly(double frequency, double couplingConstant, World world, int x, int y) {
+    Firefly(double frequency, double couplingConstant, double adjustmentFrequency, World world, int x, int y) {
         this.frequency = frequency;
         this.couplingConstant = couplingConstant;
         phaseShift = new Random().nextDouble() * 2 * Math.PI;
         this.world = world;
         this.x = x;
         this.y = y;
+        this.adjustmentFrequency = adjustmentFrequency;
     }
 
     double frequency;
@@ -18,9 +18,12 @@ public class Firefly extends Thread {
     double phaseShift;
     World world;
     int x, y;
-    //private final Object lock = new Object();
+    double adjustmentFrequency;
 
-    private double getPhase() {
+    /*
+    between -1 and 1
+     */
+    private double getActivity() {
         double time = System.currentTimeMillis() / 1E3;
         return Math.sin(frequency * time * 2 * Math.PI + phaseShift);
     }
@@ -31,19 +34,19 @@ public class Firefly extends Thread {
 
         int x_ = x - 1;
         if (x_ < 0) x_ = world[0].length - 1;
-        neighborPhases[0] = world[y][x_].getPhase();
+        neighborPhases[0] = world[y][x_].getActivity();
 
         x_ = x + 1;
         if (x_ > world[0].length - 1) x_ = 0;
-        neighborPhases[1] = world[y][x_].getPhase();
+        neighborPhases[1] = world[y][x_].getActivity();
 
         int y_ = y - 1;
         if (y_ < 0) y_ = world[0].length - 1;
-        neighborPhases[2] = world[y_][x].getPhase();
+        neighborPhases[2] = world[y_][x].getActivity();
 
         y_ = y + 1;
         if (y_ > world[0].length - 1) y_ = 0;
-        neighborPhases[3] = world[y][x].getPhase();
+        neighborPhases[3] = world[y_][x].getActivity();
 
         return neighborPhases;
     }
@@ -61,14 +64,18 @@ public class Firefly extends Thread {
     }
 
     public boolean isFlashing() {
-        return getPhase() >= 0;
+        return getActivity() >= 0;
     }
 
     public void run() {
+        long lastTimeOfAdjustment = System.currentTimeMillis();
         while (true) {
             try {
+                Thread.sleep(50);
+                long now = System.currentTimeMillis();
+                if ((now - lastTimeOfAdjustment) * 1E-3 * adjustmentFrequency < 1) continue;
                 adjustPhaseShift();
-                Thread.sleep(CONTROL_RATE); // Kontrollrate
+                lastTimeOfAdjustment = now;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

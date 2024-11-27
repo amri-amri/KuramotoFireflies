@@ -1,15 +1,15 @@
 public class World {
-    private Firefly[][] grid;
-    private int rows, cols;
+    final private Firefly[][] grid;
+    final private int rows, cols;
 
-    public World(int rows, int cols, double frequency, double couplingConstant) {
+    public World(int rows, int cols, double frequency, double couplingConstant, double adjustmentFrequency) {
         this.rows = rows;
         this.cols = cols;
         grid = new Firefly[rows][cols];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                grid[i][j] = new Firefly(frequency, couplingConstant, this, i, j);
+                grid[i][j] = new Firefly(frequency, couplingConstant, adjustmentFrequency,this, i, j);
             }
         }
     }
