@@ -13,18 +13,15 @@ public class FireflySimulation extends JFrame {
     /**
      * Creates a world and its visualisation and starts the simulation.
      *
-     * @param rows                amount of rows in the torus
-     * @param cols                amount of columns in the torus
-     * @param frequency           flashing frequency of all fireflies
-     * @param couplingConstant    the coupling constant that determines the strength of synchronisation
-     * @param adjustmentFrequency the frequency of phase shift adjustments per second
+     * @param rows amount of rows in the torus
+     * @param cols amount of columns in the torus
      */
-    public FireflySimulation(int rows, int cols, double frequency, double couplingConstant, double adjustmentFrequency) {
+    public FireflySimulation(int rows, int cols) {
 
         // model
         this.rows = rows;
         this.cols = cols;
-        world = new World(rows, cols, frequency, couplingConstant, adjustmentFrequency);
+        world = new World(rows, cols);
 
         // view
         setTitle("Firefly Synchronization Simulation");
@@ -65,6 +62,6 @@ public class FireflySimulation extends JFrame {
     }
 
     public static void main(String[] args) {
-        new FireflySimulation(100, 100, 0.5, 0.1, 1);
+        new FireflySimulation(30, 30);
     }
 }

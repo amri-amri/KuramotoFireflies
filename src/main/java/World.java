@@ -9,32 +9,44 @@ public class World {
 
     /**
      * Creates a world and instantiates the fireflies.
+     *
      * @param rows amount of rows in the torus
      * @param cols amount of columns in the torus
-     * @param frequency flashing frequency of all fireflies
-     * @param couplingConstant the coupling constant that determines the strength of synchronisation
-     * @param adjustmentFrequency the frequency of phase shift adjustments per second
      */
-    public World(int rows, int cols, double frequency, double couplingConstant, double adjustmentFrequency) {
+    public World(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
         grid = new Firefly[rows][cols];
 
+
         // create fireflies
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                grid[i][j] = new Firefly(frequency, couplingConstant, adjustmentFrequency, this, i, j);
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
+                grid[y][x] = new Firefly();
             }
         }
+        // init fireflies
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
+                Firefly[] neighbors = new Firefly[]{
+                        grid[(y - 1 + grid.length) % grid.length][x],
+                        grid[(y + 1 + grid.length) % grid.length][x],
+                        grid[y][(x - 1 + grid[0].length) % grid[0].length],
+                        grid[y][(x + 1 + grid[0].length) % grid[0].length],
+                };
+                grid[y][x].init(neighbors);
+            }
+        }
+
     }
 
     /**
      * Starts the firefly threads.
      */
     public void startSimulation() {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                grid[i][j].start();
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
+                grid[y][x].start();
             }
         }
     }
