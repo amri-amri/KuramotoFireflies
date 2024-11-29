@@ -1,6 +1,4 @@
 #!/bin/bash
-cd target
-export PATH=/home/karim/.jdks/openjdk-23.0.1/bin:$PATH
 
 java -jar KuramotoFireflies-2.0.jar "FF(0|0)" 160 0000 0000 1156 1108 1107 1101 &
 java -jar KuramotoFireflies-2.0.jar "FF(0|1)" 160 0160 0000 1157 1109 1100 1102 &

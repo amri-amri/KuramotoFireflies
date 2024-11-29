@@ -34,7 +34,7 @@ public class Firefly extends JFrame implements FireflyInterface {
         // view
         setTitle(String.format("%s at port %d", name, registryPort));
         setSize(s, s);
-        setLocation(x,y);
+        setLocation(x, y);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
@@ -89,7 +89,7 @@ public class Firefly extends JFrame implements FireflyInterface {
         double t = System.nanoTime() * 1E-9;
 
         // save current time as flash time of given neighbor
-        neighborFlashTimes.put( neighbor, t);
+        neighborFlashTimes.put(neighbor, t);
 
         // next time -> adjust phase
         doAdjustPhase = true;
@@ -124,7 +124,7 @@ public class Firefly extends JFrame implements FireflyInterface {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        // name registryPort s x y otherPorts...
+        // name s x y registryPort [otherPorts]+
         final String NAME = args[0];
         final int s = Integer.parseInt(args[1]);
         final int x = Integer.parseInt(args[2]);
@@ -153,7 +153,7 @@ public class Firefly extends JFrame implements FireflyInterface {
                 try {
                     Registry ngbRegistry = LocateRegistry.getRegistry("localhost", port);
                     FireflyInterface ngbServer = (FireflyInterface) ngbRegistry.lookup("BroadcastService");
-                    ngbServer.registerNeighbor((FireflyInterface) stub);
+                    ngbServer.registerNeighbor(stub);
                     break;
                 } catch (NotBoundException | RemoteException ignored) {
                     //throw new RuntimeException(e);
